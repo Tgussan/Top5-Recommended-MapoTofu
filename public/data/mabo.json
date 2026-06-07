@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "rank": 1,
+    "storeName": "四川菜館 赤龍",
+    "lat": 35.6812,
+    "lng": 139.7671,
+    "image": "images/sample.jpg",
+    "notes": "ランチタイムは行列必須。支払いは現金のみです。",
+    "review": "口に入れた瞬間の強烈な花椒の香りと、後から追いかけてくる深い豆板醤のコク。まさに日本最高峰の麻婆豆腐です。",
+    "ratings": {
+      "richness": 5,
+      "spiciness": 4,
+      "flavor": 5,
+      "numbness": 5,
+      "cospa": 4
+    }
+  },
+  {
+    "id": 2,
+    "rank": 2,
+    "storeName": "麻婆飯店 神戸",
+    "lat": 34.6901,
+    "lng": 135.1955,
+    "image": "images/sample.jpg",
+    "notes": "駐車場はありません。近隣のコインパーキングを利用してください。",
+    "review": "辛さは控えめですが、自家製ラー油と粗挽き肉の旨味が際立つ一品。万人におすすめできるマイルドな仕上がり。",
+    "ratings": {
+      "richness": 4,
+      "spiciness": 3,
+      "flavor": 4,
+      "numbness": 2,
+      "cospa": 5
+    }
+  },
+  {
+    "id": 3,
+    "rank": 3,
+    "storeName": "激辛中華 炎",
+    "lat": 35.1709,
+    "lng": 136.8815,
+    "image": "images/sample.jpg",
+    "notes": "辛さの調整は注文時に申告。デフォルトでかなり辛いです。",
+    "review": "とにかく辛くて痺れる！汗をかきながら食べるのが最高に気持ちいい、中毒性のある激辛麻婆豆腐。",
+    "ratings": {
+      "richness": 3,
+      "spiciness": 5,
+      "flavor": 4,
+      "numbness": 5,
+      "cospa": 3
+    }
+  }
+]

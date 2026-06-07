@@ -1,0 +1,6 @@
+# .gitignore
+node_modules
+dist
+開発メモ.txt
+.env.local
+.DS_Store

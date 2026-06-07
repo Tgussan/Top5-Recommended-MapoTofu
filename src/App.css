@@ -1,0 +1,375 @@
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.hero {
+  position: relative;
+
+  .base,
+  .framework,
+  .vite {
+    inset-inline: 0;/* 全体のリセットとベース設定 */
+body {
+  margin: 0;
+  background-color: #fcf9f5; /* 少し暖かみのある背景色 */
+  color: #333;
+}
+
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  background: #fff;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #b71c1c; /* 中華風の深い赤 */
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* 地図とランキングオーバレイのコンテナ */
+.relative-container {
+  position: relative;
+}
+
+/* --- ランキングオーバーレイ（地図の左上） --- */
+.ranking-overlay {
+  position: absolute;
+  top: 10px;
+  left: 60px; /* Leafletのズームボタン(左上)に被らないように配置 */
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  width: 220px;
+}
+
+.ranking-overlay h3 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #b71c1c;
+  border-bottom: 2px solid #b71c1c;
+  padding-bottom: 5px;
+}
+
+.ranking-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ranking-list li {
+  padding: 8px 5px;
+  cursor: pointer;
+  border-bottom: 1px dashed #ccc;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.ranking-list li:hover, .ranking-list li.active {
+  background-color: #ffebee;
+  color: #b71c1c;
+  font-weight: bold;
+}
+
+.rank-badge {
+  background-color: #ff9800;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+}
+
+/* --- ブログ（レビュー）詳細セクション --- */
+.review-section {
+  padding: 20px;
+}
+
+.review-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #b71c1c;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.review-header h2 {
+  margin: 0;
+  color: #b71c1c;
+}
+
+.rank-label {
+  background: #ffc107;
+  color: #333;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* 画像とテキスト、チャートのレイアウト配置 */
+.review-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.review-content {
+  flex: 1;
+  min-width: 300px;
+}
+
+.chart-container {
+  flex: 1;
+  min-width: 300px;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.chart-container h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.store-image {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.notes-box {
+  background-color: #fff3e0;
+  border-left: 4px solid #ff9800;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.notes-box p, .review-text p {
+  margin: 5px 0 0 0;
+  line-height: 1.6;
+}
+
+.close-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background: #eeeeee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  background: #e0e0e0;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 50px;
+  color: #777;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+    margin: 0 auto;
+  }
+
+  .base {
+    width: 170px;
+    position: relative;
+    z-index: 0;
+  }
+
+  .framework,
+  .vite {
+    position: absolute;
+  }
+
+  .framework {
+    z-index: 1;
+    top: 34px;
+    height: 28px;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
+      scale(1.4);
+  }
+
+  .vite {
+    z-index: 0;
+    top: 107px;
+    height: 26px;
+    width: auto;
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
+      scale(0.8);
+  }
+}
+
+#center {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  place-content: center;
+  place-items: center;
+  flex-grow: 1;
+
+  @media (max-width: 1024px) {
+    padding: 32px 20px 24px;
+    gap: 18px;
+  }
+}
+
+#next-steps {
+  display: flex;
+  border-top: 1px solid var(--border);
+  text-align: left;
+
+  & > div {
+    flex: 1 1 0;
+    padding: 32px;
+    @media (max-width: 1024px) {
+      padding: 24px 20px;
+    }
+  }
+
+  .icon {
+    margin-bottom: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+#docs {
+  border-right: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  margin: 32px 0 0;
+
+  .logo {
+    height: 18px;
+  }
+
+  a {
+    color: var(--text-h);
+    font-size: 16px;
+    border-radius: 6px;
+    background: var(--social-bg);
+    display: flex;
+    padding: 6px 12px;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: var(--shadow);
+    }
+    .button-icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    li {
+      flex: 1 1 calc(50% - 8px);
+    }
+
+    a {
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+  }
+}
+
+#spacer {
+  height: 88px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 1024px) {
+    height: 48px;
+  }
+}
+
+.ticks {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: var(--border);
+  }
+  &::after {
+    right: 0;
+    border-right-color: var(--border);
+  }
+}
+
