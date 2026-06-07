@@ -271,3 +271,46 @@ header h1 {
   object-fit: cover;
   border-radius: 50%; /* 画像自体も綺麗な正円にする */
 }
+
+/* --- 画面横幅が768px以下（スマホ・タブレット向け）の設定 --- */
+@media screen and (max-width: 768px) {
+  
+  /* ★地図に関する高さ指定（.map-section や .leaflet-container）はここからすべて削除してください */
+  /* 高さは上のReact側（mapHeight）が完全にコントロールします */
+
+  /* ランキングオーバーレイの配置 */
+  .ranking-overlay {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: auto;
+    margin: 10px;
+    box-shadow: none;
+    border: 1px solid #eee;
+  }
+
+  /* レビュー詳細エリアを縦並びに */
+  .review-body {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* スマホでの写真の大きさ */
+  .store-image {
+    height: 300px;
+  }
+  
+  /* プロフィール */
+  .profile-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ★追加：ズームした際もピン（マーカー）を常に最前面に表示する */
+.leaflet-marker-pane img {
+  z-index: 9999 !important;
+}
+.leaflet-popup-pane {
+  z-index: 10000 !important;
+}

@@ -7,8 +7,15 @@ import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// マーカーアイコンの初期設定
-L.Marker.prototype.options.icon = L.icon({ iconUrl: icon, shadowUrl: iconShadow, iconSize: [25, 41], iconAnchor: [12, 41] });
+// Leaflet公式のCDNから直接青いピンの画像を読み込みます
+const defaultIcon = L.icon({
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+L.Marker.prototype.options.icon = defaultIcon;
 
 // TypeScriptの型定義
 interface Ratings {
@@ -31,12 +38,17 @@ interface MaboStore {
   ratings: Ratings;
 }
 
-// 地図の中心を動かすためのヘルパーコンポーネント
+// 店詳細をクリックしたときにスーッと移動するコントローラー
 function MapController({ center }: { center: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-      map.flyTo(center, 14, { duration: 1.5 });
+      // 1. まず指定の場所に正確に中心を合わせる
+      map.setView(center, 17);
+      // 2. その後、確実に描画を更新させるために少しだけ強制リフレッシュをかける
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
     }
   }, [center, map]);
   return null;
@@ -45,6 +57,17 @@ function MapController({ center }: { center: [number, number] | null }) {
 function App() {
   const [stores, setStores] = useState<MaboStore[]>([]);
   const [selectedStore, setSelectedStore] = useState<MaboStore | null>(null);
+
+  // ★追加：ブラウザの横幅が768px未満ならスマホと判定
+  const isMobile = window.innerWidth < 768;
+  
+  // スマホならズームを「4（広域）」、PCなら「5（詳細）」にする
+  const initialZoom = isMobile ? 4 : 5;
+  // スマホなら日本全体が見えるように中心を少し北（新潟付近）にずらす
+  const initialCenter: [number, number] = isMobile ? [37.5, 138.5] : [36.0, 138.0];
+
+  // ★追加：スマホなら320px、PCなら450pxと、ここで確実に高さを固定します
+  const mapHeight = isMobile ? '320px' : '450px';
 
   useEffect(() => {
     // データの読み込み
@@ -70,7 +93,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>至高の麻婆豆腐 マップ＆レビュー</h1>
+        <h1>オススメ麻婆豆腐 マップ＆レビュー</h1>
       </header>
 
       <div className="map-section relative-container">
@@ -90,19 +113,19 @@ function App() {
           </ul>
         </div>
 
-        {/* 地図コンポーネント */}
-        <MapContainer center={[36.0, 138.0]} zoom={5} style={{ height: '450px', width: '100%' }} attributionControl={false}>
+        {/* ★修正：styleの指定を以下のように書き換えます */}
+        <MapContainer 
+          center={initialCenter} 
+          zoom={initialZoom} 
+          style={{ height: mapHeight, width: '100%' }} /* 高さを変数（mapHeight）に */
+          attributionControl={false}
+        >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <MapController center={selectedStore ? [selectedStore.lat, selectedStore.lng] : null} />
+          
           {stores.map(store => (
-            <Marker 
-              key={store.id} 
-              position={[store.lat, store.lng]} 
-              eventHandlers={{ click: () => setSelectedStore(store) }}
-            >
-              <Popup>
-                <strong>{store.storeName}</strong>
-              </Popup>
+            <Marker key={store.id} position={[store.lat, store.lng]} eventHandlers={{ click: () => setSelectedStore(store) }}>
+              <Popup><strong>{store.storeName}</strong></Popup>
             </Marker>
           ))}
         </MapContainer>
