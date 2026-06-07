@@ -44,7 +44,7 @@ function MapController({ center }: { center: [number, number] | null }) {
   useEffect(() => {
     if (center) {
       // 1. まず指定の場所に正確に中心を合わせる
-      map.setView(center, 17);
+      map.setView(center, 16);
       // 2. その後、確実に描画を更新させるために少しだけ強制リフレッシュをかける
       setTimeout(() => {
         map.invalidateSize();
