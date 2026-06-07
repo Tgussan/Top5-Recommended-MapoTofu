@@ -147,7 +147,7 @@ function App() {
           </article>
         ) : (
           <div className="placeholder">
-            <p>地図のピン、またはランキングのお店をクリックして詳細を確認してください🍜</p>
+            <p>地図のピン、またはランキングのお店をクリックして詳細を確認してください！</p>
           </div>
         )}
         <section className="profile-container">
@@ -158,8 +158,8 @@ function App() {
             <div className="profile-info">
               <h3>作成者: T.Yamaguchi</h3>
               <p className="profile-bio">
-                麻婆豆腐の「辛さ」「痺れ」と「コク」を求めて全国を旅するエンジニア。
-                趣味は登山です。
+                麻婆豆腐の「辛さ」「痺れ」と「コク」を求めて…。
+                職業はシステムエンジニアで、趣味は登山です。
               </p>
               <div className="profile-links">
                 <a 
