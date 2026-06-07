@@ -150,6 +150,30 @@ function App() {
             <p>地図のピン、またはランキングのお店をクリックして詳細を確認してください🍜</p>
           </div>
         )}
+        <section className="profile-container">
+          <div className="profile-card">
+            <div className="profile-avatar">
+              <img src="./images/icon.png" alt="T.Yamaguchiのアイコン" />
+            </div>
+            <div className="profile-info">
+              <h3>作成者: T.Yamaguchi</h3>
+              <p className="profile-bio">
+                麻婆豆腐の「辛さ」「痺れ」と「コク」を求めて全国を旅するエンジニア。
+                趣味は登山です。
+              </p>
+              <div className="profile-links">
+                <a 
+                  href="https://www.credly.com/users/tyamaguchi.7471ef8e" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="credly-link"
+                >
+                  🏅 Credly プロフィールを見る
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <footer style={{ textAlign: 'center', padding: '10px', fontSize: '0.8rem', color: '#777' }}>
         Map data © OpenStreetMap contributors
