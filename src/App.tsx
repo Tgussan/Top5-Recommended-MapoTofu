@@ -91,7 +91,7 @@ function App() {
         </div>
 
         {/* 地図コンポーネント */}
-        <MapContainer center={[36.0, 138.0]} zoom={5} style={{ height: '450px', width: '100%' }}>
+        <MapContainer center={[36.0, 138.0]} zoom={5} style={{ height: '450px', width: '100%' }} attributionControl={false}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <MapController center={selectedStore ? [selectedStore.lat, selectedStore.lng] : null} />
           {stores.map(store => (
@@ -151,6 +151,9 @@ function App() {
           </div>
         )}
       </main>
+      <footer style={{ textAlign: 'center', padding: '10px', fontSize: '0.8rem', color: '#777' }}>
+        Map data © OpenStreetMap contributors
+      </footer>
     </div>
   );
 }
