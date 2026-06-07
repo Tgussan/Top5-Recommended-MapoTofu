@@ -21,7 +21,7 @@ L.Marker.prototype.options.icon = defaultIcon;
 interface Ratings {
   richness: number;   // コクの深さ
   spiciness: number;  // 辛さ
-  flavor: number;     // 香辛料の風味&食感
+  flavor: number;     // 風味と食感
   numbness: number;   // 痺れ
   cospa: number;      // コスパ
 }
@@ -85,7 +85,7 @@ function App() {
   const getChartData = (ratings: Ratings) => [
     { subject: 'コクの深さ', score: ratings.richness, fullMark: 5 },
     { subject: '辛さ', score: ratings.spiciness, fullMark: 5 },
-    { subject: '香辛料の風味&食感', score: ratings.flavor, fullMark: 5 },
+    { subject: '風味と食感', score: ratings.flavor, fullMark: 5 },
     { subject: '痺れ', score: ratings.numbness, fullMark: 5 },
     { subject: 'コスパ', score: ratings.cospa, fullMark: 5 },
   ];
