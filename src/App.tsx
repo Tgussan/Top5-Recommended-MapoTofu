@@ -43,6 +43,11 @@ function MapController({ center }: { center: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
+    
+      // ★重要：地図移動の前に、現在開いているポップアップ（吹き出し）をすべて強制的に閉じます
+      // これにより、Leafletの画面ロックが解除され、他県へのジャンプが阻害されなくなります
+      map.closePopup();
+    
       // 1. まず指定の場所に正確に中心を合わせる
       map.setView(center, 16);
       // 2. その後、確実に描画を更新させるために少しだけ強制リフレッシュをかける
