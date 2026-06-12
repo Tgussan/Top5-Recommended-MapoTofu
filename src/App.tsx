@@ -63,8 +63,8 @@ function App() {
   
   // スマホならズームを「4（広域）」、PCなら「5（詳細）」にする
   const initialZoom = isMobile ? 4 : 5;
-  // スマホなら日本全体が見えるように中心を少し北（新潟付近）にずらす
-  const initialCenter: [number, number] = isMobile ? [37.5, 138.5] : [36.0, 138.0];
+  // スマホなら日本全体が見えるように中心を少し北（新潟付近）にずらす before 37.5 138.4
+  const initialCenter: [number, number] = isMobile ? [37.5, 140.0] : [38.5, 133.0];
 
   // ★追加：スマホなら320px、PCなら450pxと、ここで確実に高さを固定します
   const mapHeight = isMobile ? '320px' : '450px';
