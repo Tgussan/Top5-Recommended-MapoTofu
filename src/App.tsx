@@ -101,15 +101,20 @@ function App() {
         <div className="ranking-overlay">
           <h3>🏆 おすすめランキング</h3>
           <ul className="ranking-list">
-            {rankingStores.map(store => (
-              <li 
-                key={store.id} 
-                onClick={() => setSelectedStore(store)}
-                className={selectedStore?.id === store.id ? 'active' : ''}
-              >
-                <span className="rank-badge">{store.rank}位</span> {store.storeName}
-              </li>
-            ))}
+            {stores
+              /* ★ 1位〜5位のお店だけに絞り込み、順位順に並び替える */
+              .filter(store => store.rank && store.rank <= 5)
+              .sort((a, b) => (a.rank || 0) - (b.rank || 0))
+              .map((store) => (
+                <li
+                  key={store.id}
+                  className={selectedStore?.id === store.id ? 'active' : ''}
+                  onClick={() => setSelectedStore(store)}
+                >
+                  <span className="rank-badge">{store.rank}位</span>
+                  <span className="store-name-text">{store.storeName}</span>
+                </li>
+              ))}
           </ul>
         </div>
 
@@ -136,7 +141,10 @@ function App() {
           <article className="review-card">
             <div className="review-header">
               <h2>{selectedStore.storeName}</h2>
-              {selectedStore.rank && <span className="rank-label">おすすめ第{selectedStore.rank}位</span>}
+                {/* ★ 1〜5位のときだけ右側に「〇位」のラベルを表示する */}
+                {selectedStore.rank && selectedStore.rank <= 5 && (
+                  <span className="rank-label">おすすめ第{selectedStore.rank}位</span>
+                )}
             </div>
             
             <div className="review-body">
