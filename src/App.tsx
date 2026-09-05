@@ -99,6 +99,7 @@ function App() {
     <div className="app-container">
       <header>
         <h1>オススメ麻婆豆腐 マップ＆レビュー</h1>
+        更新日：2026年9月5日
       </header>
 
       <div className="map-section relative-container">
