@@ -4,31 +4,27 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import 'leaflet/dist/leaflet.css';
 import './App.css';
 import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// Leaflet公式のCDNから直接青いピンの画像を読み込みます
+// Leaflet 1.9.4 のCDNを使用し、アイコン設定を定義（プロトタイプ汚染を排除）
 const defaultIcon = L.icon({
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
-L.Marker.prototype.options.icon = defaultIcon;
 
-// TypeScriptの型定義
 interface Ratings {
-  richness: number;   // コクの深さ
-  spiciness: number;  // 辛さ
-  flavor: number;     // 風味と食感
-  numbness: number;   // 痺れ
-  cospa: number;      // コスパ
+  richness: number;
+  spiciness: number;
+  flavor: number;
+  numbness: number;
+  cospa: number;
 }
 
 interface MaboStore {
   id: number;
-  rank: number | null; // 1~5位。nullならランキング外
+  rank: number | null;
   storeName: string;
   lat: number;
   lng: number;
@@ -38,19 +34,12 @@ interface MaboStore {
   ratings: Ratings;
 }
 
-// 店詳細をクリックしたときにスーッと移動するコントローラー
 function MapController({ center }: { center: [number, number] | null }) {
   const map = useMap();
   useEffect(() => {
     if (center) {
-    
-      // ★重要：地図移動の前に、現在開いているポップアップ（吹き出し）をすべて強制的に閉じます
-      // これにより、Leafletの画面ロックが解除され、他県へのジャンプが阻害されなくなります
       map.closePopup();
-    
-      // 1. まず指定の場所に正確に中心を合わせる
       map.setView(center, 16);
-      // 2. その後、確実に描画を更新させるために少しだけ強制リフレッシュをかける
       setTimeout(() => {
         map.invalidateSize();
       }, 100);
@@ -62,31 +51,26 @@ function MapController({ center }: { center: [number, number] | null }) {
 function App() {
   const [stores, setStores] = useState<MaboStore[]>([]);
   const [selectedStore, setSelectedStore] = useState<MaboStore | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
 
-  // ★追加：ブラウザの横幅が768px未満ならスマホと判定
-  const isMobile = window.innerWidth < 768;
-  
-  // スマホならズームを「4（広域）」、PCなら「5（詳細）」にする
+  // ウィンドウのリサイズイベントを監視し、モバイル判定を動的に更新
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const initialZoom = isMobile ? 4 : 5;
-  // スマホなら日本全体が見えるように中心を少し北（新潟付近）にずらす before 37.5 138.4
   const initialCenter: [number, number] = isMobile ? [37.5, 140.0] : [38.5, 133.0];
-
-  // ★追加：スマホなら320px、PCなら450pxと、ここで確実に高さを固定します
   const mapHeight = isMobile ? '320px' : '450px';
 
   useEffect(() => {
-    // データの読み込み
     fetch('./data/mabo.json')
       .then(res => res.json())
-      .then(data => setStores(data));
+      .then(data => setStores(data))
+      .catch(err => console.error("Failed to load map data:", err));
   }, []);
 
-  // ランキング順（1〜5位）にフィルタリング＆ソート
-  const rankingStores = stores
-    .filter(store => store.rank !== null && store.rank <= 5)
-    .sort((a, b) => (a.rank || 99) - (b.rank || 99));
-
-  // レーダーチャート用のデータ成形関数
   const getChartData = (ratings: Ratings) => [
     { subject: 'コクの深さ', score: ratings.richness, fullMark: 5 },
     { subject: '辛さ', score: ratings.spiciness, fullMark: 5 },
@@ -103,13 +87,11 @@ function App() {
       </header>
 
       <div className="map-section relative-container">
-        {/* ランキングのオーバーレイ表示（地図の左上） */}
         <div className="ranking-overlay">
           <h3>🏆 おすすめランキング</h3>
           <ul className="ranking-list">
             {stores
-              /* ★ 1位〜5位のお店だけに絞り込み、順位順に並び替える */
-              .filter(store => store.rank && store.rank <= 5)
+              .filter(store => store.rank !== null && store.rank <= 5)
               .sort((a, b) => (a.rank || 0) - (b.rank || 0))
               .map((store) => (
                 <li
@@ -124,18 +106,22 @@ function App() {
           </ul>
         </div>
 
-        {/* ★修正：styleの指定を以下のように書き換えます */}
         <MapContainer 
           center={initialCenter} 
           zoom={initialZoom} 
-          style={{ height: mapHeight, width: '100%' }} /* 高さを変数（mapHeight）に */
+          style={{ height: mapHeight, width: '100%' }}
           attributionControl={false}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <MapController center={selectedStore ? [selectedStore.lat, selectedStore.lng] : null} />
           
           {stores.map(store => (
-            <Marker key={store.id} position={[store.lat, store.lng]} eventHandlers={{ click: () => setSelectedStore(store) }}>
+            <Marker 
+              key={store.id} 
+              position={[store.lat, store.lng]} 
+              icon={defaultIcon} /* プロパティとしてアイコンを直接指定 */
+              eventHandlers={{ click: () => setSelectedStore(store) }}
+            >
               <Popup><strong>{store.storeName}</strong></Popup>
             </Marker>
           ))}
@@ -147,8 +133,7 @@ function App() {
           <article className="review-card">
             <div className="review-header">
               <h2>{selectedStore.storeName}</h2>
-                {/* ★ 1〜5位のときだけ右側に「〇位」のラベルを表示する */}
-                {selectedStore.rank && selectedStore.rank <= 5 && (
+                {selectedStore.rank !== null && selectedStore.rank <= 5 && (
                   <span className="rank-label">おすすめ第{selectedStore.rank}位</span>
                 )}
             </div>
@@ -166,7 +151,6 @@ function App() {
                 </div>
               </div>
 
-              {/* レーダーチャート */}
               <div className="chart-container">
                 <h3>評価チャート</h3>
                 <ResponsiveContainer width="100%" height={300}>
@@ -174,7 +158,6 @@ function App() {
                     <PolarGrid />
                     <PolarAngleAxis dataKey="subject" tick={{ fill: '#333', fontSize: 12 }} />
                     <PolarRadiusAxis angle={30} domain={[0, 5]} tickCount={6} />
-                    {/* 麻婆豆腐をイメージした赤系のカラー設定 */}
                     <Radar name="評価" dataKey="score" stroke="#d32f2f" fill="#d32f2f" fillOpacity={0.5} />
                   </RadarChart>
                 </ResponsiveContainer>
