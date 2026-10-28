@@ -83,7 +83,7 @@ function App() {
     <div className="app-container">
       <header>
         <h1>オススメ麻婆豆腐 マップ＆レビュー</h1>
-        更新日：2026年10月27日
+        更新日：2026年10月27日　　総店舗数：36
       </header>
 
       <div className="map-section relative-container">
